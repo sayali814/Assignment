@@ -1,0 +1,99 @@
+<h1>Student Details</h1>
+<mat-table class="table-margin-bottom" #table [dataSource]="dataSource">
+  <ng-container matColumnDef="firstName">
+    <mat-header-cell *matHeaderCellDef> First Name </mat-header-cell>
+    <mat-cell *matCellDef="let row">
+      <mat-form-field floatLabel="{{ row.editing ? 'float' : 'never'}}">
+        <input matInput [readonly]="!row.editing" placeholder="Name" [(ngModel)]="row.currentData.firstName">
+      </mat-form-field>
+    </mat-cell>
+  </ng-container>
+  <ng-container matColumnDef="lastName">
+    <mat-header-cell *matHeaderCellDef> Last Name </mat-header-cell>
+    <mat-cell *matCellDef="let row">
+      <mat-form-field floatLabel="{{ row.editing ? 'float' : 'never'}}">
+        <input matInput [readonly]="!row.editing" placeholder="Last Name" [(ngModel)]="row.currentData.lastName">
+      </mat-form-field>
+    </mat-cell>
+  </ng-container>
+  <ng-container matColumnDef="gender">
+    <mat-header-cell *matHeaderCellDef> Gender </mat-header-cell>
+    <mat-cell *matCellDef="let row">
+      <mat-form-field floatLabel="{{ row.editing ? 'float' : 'never'}}">
+        <mat-select [(ngModel)]="row.currentData.gender" name="gender" placeholder="Gender">
+          <mat-option *ngFor="let gender of genders" [value]="gender">
+            {{gender}}
+          </mat-option>
+        </mat-select>
+      </mat-form-field>
+    </mat-cell>
+  </ng-container>
+  <ng-container matColumnDef="email">
+    <mat-header-cell *matHeaderCellDef> Email </mat-header-cell>
+    <mat-cell *matCellDef="let row">
+      <mat-form-field floatLabel="{{ row.editing ? 'float' : 'never'}}">
+        <input matInput [readonly]="!row.editing" placeholder="Email Id" [(ngModel)]="row.currentData.email">
+      </mat-form-field>
+    </mat-cell>
+  </ng-container>
+  <ng-container matColumnDef="city">
+    <mat-header-cell *matHeaderCellDef> City </mat-header-cell>
+    <mat-cell *matCellDef="let row">
+      <mat-form-field floatLabel="{{ row.editing ? 'float' : 'never'}}">      
+        <input matInput placeholder="Search for a city" [(ngModel)]="row.currentData.city" name="city"
+          [matAutocomplete]="auto" (ngModelChange)="filteredCities($event)">
+        <mat-autocomplete #auto="matAutocomplete" [displayWith]="displayFn">
+          <mat-option *ngFor="let city of citiesForHtml" [value]="city.name">
+            {{city.name}}
+          </mat-option>
+        </mat-autocomplete>
+      </mat-form-field>
+    </mat-cell>
+  </ng-container>
+  <!-- gender','email','city','grade','isActive' -->
+  <ng-container matColumnDef="grade">
+    <mat-header-cell *matHeaderCellDef> Grade </mat-header-cell>
+    <mat-cell *matCellDef="let row">
+      <mat-form-field floatLabel="{{ row.editing ? 'float' : 'never'}}">
+        <!-- <input matInput [readonly]="!row.editing" placeholder="Grade" [(ngModel)]="row.currentData.grade"> -->
+        <mat-select [(ngModel)]="row.currentData.grade" name="grade" placeholder="Grade">
+          <mat-option *ngFor="let grade of grades" [value]="grade">
+            {{grade}}
+          </mat-option>
+        </mat-select>
+      </mat-form-field>
+    </mat-cell>
+  </ng-container>
+  <ng-container matColumnDef="isActive">
+    <mat-header-cell *matHeaderCellDef> isActive </mat-header-cell>
+    <mat-cell *matCellDef="let row">
+      <mat-form-field floatLabel="{{ row.editing ? 'float' : 'never'}}">
+        <input matInput [readonly]="!row.editing" placeholder="IsActive" [(ngModel)]="row.currentData.isActive">
+      </mat-form-field>
+    </mat-cell>
+  </ng-container>
+  <ng-container matColumnDef="actionsColumn">
+    <mat-header-cell *matHeaderCellDef>
+    </mat-header-cell>
+    <mat-cell *matCellDef="let row">
+      <button *ngIf="!row.editing" mat-icon-button color="primary" focusable="false" (click)="row.startEdit()">
+        Edit
+      </button>
+      <button *ngIf="row.editing" mat-icon-button color="primary" focusable="false" (click)="row.confirmEditCreate()">
+        Confirm
+      </button>
+
+      <button mat-icon-button color="primary" focusable="false" (click)="row.cancelOrDelete()"
+        style="margin-left: 20px;">
+        Delete
+      </button>
+    </mat-cell>
+  </ng-container>
+
+  <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
+  <mat-row *matRowDef="let row; columns: displayedColumns;"></mat-row>
+</mat-table>
+
+<button mat-icon-button color="primary" focusable="false" (click)="goToForm()" style="margin-left: 20px;">
+  Back
+</button>

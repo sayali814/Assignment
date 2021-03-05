@@ -1,0 +1,83 @@
+<!-- Material form register -->
+<div class="container" style="margin-top: 50px;">
+    <div class="row">
+        <mat-card>
+            <mat-card-title>Student Details Form</mat-card-title>
+
+            <!--Card content-->
+            <mat-card-content class="px-lg-5 pt-0">
+
+                <!-- Form -->
+                <form class="text-center" style="color: #757575;" #studentForm="ngForm" (ngSubmit)="submitStudentDetails(studentForm)">
+
+                    <div class="form-row">
+                        <div class="col">
+                            <!-- First name -->
+                            <mat-form-field class="example-full-width">
+                                <mat-label>First Name</mat-label>
+                                <input matInput placeholder="First Name" value="" name="firstName"
+                                    [(ngModel)]=student.firstName required>
+                            </mat-form-field>
+                        </div>
+                        <div class="col">
+                            <!-- Last name -->
+                            <mat-form-field class="example-full-width">
+                                <mat-label>Last Name</mat-label>
+                                <input matInput placeholder="Last Name" value="" name="lastName"
+                                    [(ngModel)]=student.lastName required>
+                            </mat-form-field>
+                        </div>
+                    </div>
+
+                    <!-- E-mail -->
+                    <div class="md-form mt-0">
+                        <mat-form-field class="example-full-width">
+                            <mat-label>Email Id Name</mat-label>
+                            <input matInput placeholder="Email" value="" name="emailId" [(ngModel)]=student.email
+                                required>
+                        </mat-form-field>
+                    </div>
+                    <!-- city -->
+                    <div class="md-form mt-0">
+                        <mat-form-field class="example-full-width">
+                            <input matInput placeholder="Search for a city" [(ngModel)]="student.city" name="city"
+                                [matAutocomplete]="auto" (ngModelChange)="filteredCities($event)" required>
+                            <mat-autocomplete #auto="matAutocomplete" [displayWith]="displayFn">
+                                <mat-option *ngFor="let city of citiesForHtml" [value]="city.name">
+                                    {{city.name}}
+                                </mat-option>
+                            </mat-autocomplete>
+                        </mat-form-field>
+                    </div>
+                    <!-- gender -->
+                    <div class="md-form mt-0">
+                        <mat-radio-group aria-label="Select Gender" [(ngModel)]="student.gender" name="gender">
+                            <mat-radio-button value="Male">Male</mat-radio-button>
+                            <mat-radio-button value="Female" style="margin-left: 5px;">Female</mat-radio-button>
+                        </mat-radio-group>
+                    </div>
+                    <div class="md-form mt-0">
+                        <mat-form-field class="example-full-width">
+                            <mat-label>Select Grade</mat-label>
+                            <mat-select [(ngModel)]="student.grade" name="grade" required>
+                                <mat-option [value]="grade" *ngFor="let grade of grades">{{grade}}</mat-option>
+                            </mat-select>
+                        </mat-form-field>
+                    </div>
+                    <!-- isActive -->
+                    <div class="md-form mt-0">
+                        <mat-checkbox class="example-margin" [(ngModel)]="student.isActive" name="isActive">isActive
+                        </mat-checkbox>
+                    </div>
+                </form>
+                <!-- Form -->
+            </mat-card-content>
+            <!-- Sign up button -->
+            <div class="example-button-row" style="margin-top: 50px;">
+                <button mat-raised-button color="accent" (click)="submitStudentDetails(studentForm)">Submit
+                    Details</button>
+            </div>
+        </mat-card>
+    </div>
+</div>
+<!-- Material form register -->
