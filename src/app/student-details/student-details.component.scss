@@ -1,3 +1,8 @@
 :host ::ng-deep .mat-form-field-infix{
     width: 130px;
 }
+
+:host ::ng-deep .mat-form-field-appearance-legacy.mat-form-field-disabled .mat-form-field-underline{
+    background-size: 1px 100%;
+}
+

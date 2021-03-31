@@ -16,7 +16,10 @@
                             <mat-form-field class="example-full-width">
                                 <mat-label>First Name</mat-label>
                                 <input matInput placeholder="First Name" value="" name="firstName"
-                                    [(ngModel)]=student.firstName required>
+                                    [(ngModel)]=student.firstName #firstNameVal="ngModel" required>
+                                    <mat-error *ngIf="firstNameVal.invalid && firstNameVal.touched">
+                                        Please enter First Name 
+                                      </mat-error>
                             </mat-form-field>
                         </div>
                         <div class="col">
@@ -24,7 +27,10 @@
                             <mat-form-field class="example-full-width">
                                 <mat-label>Last Name</mat-label>
                                 <input matInput placeholder="Last Name" value="" name="lastName"
-                                    [(ngModel)]=student.lastName required>
+                                    [(ngModel)]=student.lastName #lastNameVal="ngModel" required>
+                                    <mat-error *ngIf="lastNameVal.invalid && lastNameVal.touched">
+                                        Please enter Last Name 
+                                      </mat-error>
                             </mat-form-field>
                         </div>
                     </div>
@@ -32,36 +38,48 @@
                     <!-- E-mail -->
                     <div class="md-form mt-0">
                         <mat-form-field class="example-full-width">
-                            <mat-label>Email Id Name</mat-label>
+                            <mat-label>Email Id</mat-label>
                             <input matInput placeholder="Email" value="" name="emailId" [(ngModel)]=student.email
-                                required>
+                            #emailVal="ngModel" pattern="^[\w\d]+([.-]?[\w\d])+@[A-Za-z0-9-]+\.[A-Za-z]{2,4}$" required>                                
+                                  <mat-error *ngIf="emailVal.invalid && emailVal.touched">
+                                    Please enter valid Email id
+                                  </mat-error>
                         </mat-form-field>
                     </div>
                     <!-- city -->
                     <div class="md-form mt-0">
                         <mat-form-field class="example-full-width">
                             <input matInput placeholder="Search for a city" [(ngModel)]="student.city" name="city"
-                                [matAutocomplete]="auto" (ngModelChange)="filteredCities($event)" required>
+                                [matAutocomplete]="auto" (ngModelChange)="filteredCities($event)"  #cityVal="ngModel" required>
                             <mat-autocomplete #auto="matAutocomplete" [displayWith]="displayFn">
                                 <mat-option *ngFor="let city of citiesForHtml" [value]="city.name">
                                     {{city.name}}
                                 </mat-option>
                             </mat-autocomplete>
+                            <mat-error *ngIf="cityVal.invalid && cityVal.touched">
+                                Please enter City 
+                              </mat-error>
                         </mat-form-field>
                     </div>
                     <!-- gender -->
                     <div class="md-form mt-0">
-                        <mat-radio-group aria-label="Select Gender" [(ngModel)]="student.gender" name="gender">
+                        <mat-radio-group aria-label="Select Gender" [(ngModel)]="student.gender" name="gender" #genderVal="ngModel" required>
                             <mat-radio-button value="Male">Male</mat-radio-button>
                             <mat-radio-button value="Female" style="margin-left: 5px;">Female</mat-radio-button>
-                        </mat-radio-group>
+                        </mat-radio-group> 
+                        <mat-error style="font-size: 75%;" *ngIf="genderVal.invalid && genderVal.touched">
+                            Please select Gender 
+                          </mat-error>                       
                     </div>
                     <div class="md-form mt-0">
                         <mat-form-field class="example-full-width">
                             <mat-label>Select Grade</mat-label>
-                            <mat-select [(ngModel)]="student.grade" name="grade" required>
+                            <mat-select [(ngModel)]="student.grade" name="grade"  #gradeVal="ngModel" required>
                                 <mat-option [value]="grade" *ngFor="let grade of grades">{{grade}}</mat-option>
                             </mat-select>
+                            <mat-error *ngIf="gradeVal.invalid && gradeVal.touched">
+                                Please select Grade
+                              </mat-error>
                         </mat-form-field>
                     </div>
                     <!-- isActive -->

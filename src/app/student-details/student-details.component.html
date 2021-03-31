@@ -4,7 +4,7 @@
     <mat-header-cell *matHeaderCellDef> First Name </mat-header-cell>
     <mat-cell *matCellDef="let row">
       <mat-form-field floatLabel="{{ row.editing ? 'float' : 'never'}}">
-        <input matInput [readonly]="!row.editing" placeholder="Name" [(ngModel)]="row.currentData.firstName">
+        <input matInput [disabled]="!row.editing" placeholder="Name" [(ngModel)]="row.currentData.firstName">
       </mat-form-field>
     </mat-cell>
   </ng-container>
@@ -12,7 +12,7 @@
     <mat-header-cell *matHeaderCellDef> Last Name </mat-header-cell>
     <mat-cell *matCellDef="let row">
       <mat-form-field floatLabel="{{ row.editing ? 'float' : 'never'}}">
-        <input matInput [readonly]="!row.editing" placeholder="Last Name" [(ngModel)]="row.currentData.lastName">
+        <input matInput [disabled]="!row.editing" placeholder="Last Name" [(ngModel)]="row.currentData.lastName">
       </mat-form-field>
     </mat-cell>
   </ng-container>
@@ -20,7 +20,7 @@
     <mat-header-cell *matHeaderCellDef> Gender </mat-header-cell>
     <mat-cell *matCellDef="let row">
       <mat-form-field floatLabel="{{ row.editing ? 'float' : 'never'}}">
-        <mat-select [(ngModel)]="row.currentData.gender" name="gender" placeholder="Gender">
+        <mat-select [(ngModel)]="row.currentData.gender" name="gender" placeholder="Gender" [disabled]="!row.editing">
           <mat-option *ngFor="let gender of genders" [value]="gender">
             {{gender}}
           </mat-option>
@@ -32,7 +32,7 @@
     <mat-header-cell *matHeaderCellDef> Email </mat-header-cell>
     <mat-cell *matCellDef="let row">
       <mat-form-field floatLabel="{{ row.editing ? 'float' : 'never'}}">
-        <input matInput [readonly]="!row.editing" placeholder="Email Id" [(ngModel)]="row.currentData.email">
+        <input matInput [disabled]="!row.editing" placeholder="Email Id" [(ngModel)]="row.currentData.email">
       </mat-form-field>
     </mat-cell>
   </ng-container>
@@ -40,7 +40,7 @@
     <mat-header-cell *matHeaderCellDef> City </mat-header-cell>
     <mat-cell *matCellDef="let row">
       <mat-form-field floatLabel="{{ row.editing ? 'float' : 'never'}}">      
-        <input matInput placeholder="Search for a city" [(ngModel)]="row.currentData.city" name="city"
+        <input matInput [disabled]="!row.editing" placeholder="Search for a city" [(ngModel)]="row.currentData.city" name="city"
           [matAutocomplete]="auto" (ngModelChange)="filteredCities($event)">
         <mat-autocomplete #auto="matAutocomplete" [displayWith]="displayFn">
           <mat-option *ngFor="let city of citiesForHtml" [value]="city.name">
@@ -50,13 +50,11 @@
       </mat-form-field>
     </mat-cell>
   </ng-container>
-  <!-- gender','email','city','grade','isActive' -->
   <ng-container matColumnDef="grade">
     <mat-header-cell *matHeaderCellDef> Grade </mat-header-cell>
     <mat-cell *matCellDef="let row">
-      <mat-form-field floatLabel="{{ row.editing ? 'float' : 'never'}}">
-        <!-- <input matInput [readonly]="!row.editing" placeholder="Grade" [(ngModel)]="row.currentData.grade"> -->
-        <mat-select [(ngModel)]="row.currentData.grade" name="grade" placeholder="Grade">
+      <mat-form-field floatLabel="{{ row.editing ? 'float' : 'never'}}" >
+        <mat-select [(ngModel)]="row.currentData.grade" name="grade" placeholder="Grade" [disabled]="!row.editing" >
           <mat-option *ngFor="let grade of grades" [value]="grade">
             {{grade}}
           </mat-option>
@@ -68,7 +66,7 @@
     <mat-header-cell *matHeaderCellDef> isActive </mat-header-cell>
     <mat-cell *matCellDef="let row">
       <mat-form-field floatLabel="{{ row.editing ? 'float' : 'never'}}">
-        <input matInput [readonly]="!row.editing" placeholder="IsActive" [(ngModel)]="row.currentData.isActive">
+        <input matInput [disabled]="!row.editing" placeholder="IsActive" [(ngModel)]="row.currentData.isActive">
       </mat-form-field>
     </mat-cell>
   </ng-container>
@@ -76,14 +74,14 @@
     <mat-header-cell *matHeaderCellDef>
     </mat-header-cell>
     <mat-cell *matCellDef="let row">
-      <button *ngIf="!row.editing" mat-icon-button color="primary" focusable="false" (click)="row.startEdit()">
+      <button *ngIf="!row.editing" mat-icon-button color="primary" focusable="false" (click)="row.startEdit();">
         Edit
       </button>
-      <button *ngIf="row.editing" mat-icon-button color="primary" focusable="false" (click)="row.confirmEditCreate()">
+      <button *ngIf="row.editing" mat-icon-button color="primary" focusable="false" (click)="row.confirmEditCreate();editStudentInfo(row)">
         Confirm
       </button>
 
-      <button mat-icon-button color="primary" focusable="false" (click)="row.cancelOrDelete()"
+      <button mat-icon-button color="primary" focusable="false" (click)="row.cancelOrDelete(); setStudentInfo(row)"
         style="margin-left: 20px;">
         Delete
       </button>

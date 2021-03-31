@@ -3,6 +3,7 @@ import { NgForm } from '@angular/forms';
 import { Router } from '@angular/router';
 import { DataService } from 'src/services/getData.service';
 import { studentInformation } from '../studentInformation.model';
+import * as _ from 'lodash';
 
 @Component({
   selector: 'app-student-form',
@@ -17,6 +18,7 @@ grades=['A','B','C','D','E'];
 citiesForHtml:Array<any>;
 citiesToBeUsedForTS:Array<object>;
 isFormValid:boolean=false;
+studentInfo:any=[];
 
   ngOnInit() {
     this.cities.getCities().subscribe(city=>{
@@ -28,12 +30,21 @@ isFormValid:boolean=false;
   submitStudentDetails(students:NgForm){
     if(!students.invalid){
     this.isFormValid=true;
-    localStorage.setItem('studentDetails',JSON.stringify(this.student));
+    var x :any;
+    x = _.isEmpty(localStorage.getItem('studentDetails')) ? [] : JSON.parse(localStorage.getItem('studentDetails'));
+    if(x.length !=0){
+    x.forEach(element => {
+      this.studentInfo.push(element);      
+    });
+    }
+    this.studentInfo.push(this.student)
+    localStorage.setItem('studentDetails',JSON.stringify(this.studentInfo));
       this.router.navigateByUrl('/studentDetails');
       
     }
     else{
-      window.alert("All fields are Mandatory please check form and submit it again")
+      students.control.markAllAsTouched();
+      //window.alert("All fields are Mandatory please check form and submit it again")
       this.isFormValid=false;
 
     }

@@ -1,23 +1,19 @@
-import {  Component, EventEmitter, OnInit, Output } from '@angular/core';
+import {  Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
-import { TableDataSource, ValidatorService } from 'angular4-material-table';
+import { TableDataSource } from 'angular4-material-table';
 import { DataService } from 'src/services/getData.service';
 import { studentInformation } from '../studentInformation.model';
-import { studentValidatorService } from '../studentValidatorService';
-
+import * as _ from 'lodash';
 @Component({
   selector: 'app-student-details',
   templateUrl: './student-details.component.html',
-  styleUrls: ['./student-details.component.scss'],
-  providers: [
-    {provide: ValidatorService, useClass: studentValidatorService }
-  ]
+  styleUrls: ['./student-details.component.scss']
 })
 export class StudentDetailsComponent implements OnInit {
   dataSource: TableDataSource<studentInformation>;
   studentInfo:any;
   citiesToBeUsedForTS:Array<object>;
-  citiesForHtml:Array<object>;
+  citiesForHtml:Array<any>;
   arrey:Array<string>=[];
   displayedColumns = ['firstName', 'lastName','gender','email','city','grade','isActive', 'actionsColumn'];
   grades=['A','B','C','D','E'];
@@ -31,10 +27,8 @@ export class StudentDetailsComponent implements OnInit {
       this.citiesToBeUsedForTS = city;
       this.citiesForHtml=city;
     })
-  this.studentInfo =   localStorage.getItem('studentDetails');
-  this.studentInfo = JSON.parse(this.studentInfo);
-  this.arrey.push(this.studentInfo);  
-  this.dataSource  = new TableDataSource<any>(this.arrey ,studentInformation);
+  this.studentInfo =   _.isEmpty(localStorage.getItem('studentDetails')) ? [] : JSON.parse(localStorage.getItem('studentDetails'));
+  this.dataSource  = new TableDataSource<any>(this.studentInfo ,studentInformation);
   console.log(this.dataSource);  
   }
 
@@ -44,8 +38,17 @@ export class StudentDetailsComponent implements OnInit {
 
   filteredCities(cityToBeFiltered){
     this.citiesForHtml=this.citiesToBeUsedForTS;
-     this.citiesForHtml =  this.citiesForHtml.filter(city=>city.name.toLowerCase().includes(cityToBeFiltered));
+     this.citiesForHtml =   this.citiesForHtml.filter(city=>city.name.toLowerCase().includes(cityToBeFiltered));
     return this.citiesForHtml;
+  }
+  setStudentInfo(rowData){
+   let index = rowData.id;
+   this.studentInfo.splice(index,1);
+   localStorage.setItem('studentDetails',JSON.stringify(this.studentInfo));
+  }
+  editStudentInfo(rowData){
+    this.studentInfo[rowData.id] = rowData._currentData;
+    localStorage.setItem('studentDetails',JSON.stringify(this.studentInfo));
   }
  
 }
